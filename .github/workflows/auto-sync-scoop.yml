@@ -1,28 +1,39 @@
-# 将 ScoopInstaller 组织下的仓库同步到 Gitee
+# 自动同步 Scoop 相关仓库到 Gitee
 name: Auto Sync Scoop to Gitee
 
 on:
+  # 手动触发
   workflow_dispatch:
   schedule:
     # 每 12 小时同步一次
-    - cron: '0 0/12 * * *'
+    - cron: "0 0/12 * * *"
 
 jobs:
   sync-to-gitee:
     runs-on: ubuntu-latest
     steps:
-      - name: Set Timezone
-        run: sudo timedatectl set-timezone 'Asia/Shanghai'
-
-      - name: Sync to Gitee
+      - name: Sync from ScoopInstaller
         uses: Yikun/hub-mirror-action@master
         with:
           src: github/ScoopInstaller
           dst: gitee/junlongzzz
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
-          src_account_type: 'org' # 源账户类型
-          dst_account_type: 'user' # 目的账户类型
+          src_account_type: "org" # 源账户类型
+          dst_account_type: "user" # 目的账户类型
           force_update: true # 强制更新
-          static_list: 'Scoop,Install,Main,Extras,Versions,Java,Nonportable'  # 需要同步的仓库列表
-          mappings: 'Install=>Scoop-Install, Main=>Scoop-Main, Extras=>Scoop-Extras, Versions=>Scoop-Versions, Java=>Scoop-Java, Nonportable=>Scoop-Nonportable' # 仓库映射规则
+          static_list: "Scoop,Install,Main,Extras,Versions,Java,Nonportable" # 需要同步的仓库列表
+          mappings: "Install=>Scoop-Install, Main=>Scoop-Main, Extras=>Scoop-Extras, Versions=>Scoop-Versions, Java=>Scoop-Java, Nonportable=>Scoop-Nonportable" # 仓库映射规则
+
+      - name: Sync from dorado
+        uses: Yikun/hub-mirror-action@master
+        with:
+          src: github/chawyehsu
+          dst: gitee/junlongzzz
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token: ${{ secrets.GITEE_TOKEN }}
+          src_account_type: "user" # 源账户类型
+          dst_account_type: "user" # 目的账户类型
+          force_update: true # 强制更新
+          static_list: "dorado" # 需要同步的仓库列表
+          mappings: "dorado=>Scoop-Dorado"
