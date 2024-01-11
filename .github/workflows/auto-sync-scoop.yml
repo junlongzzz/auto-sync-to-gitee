@@ -9,7 +9,7 @@ on:
     - cron: "0 0/12 * * *"
 
 jobs:
-  sync-to-gitee:
+  sync-from-scoopinstaller:
     runs-on: ubuntu-latest
     steps:
       - name: Sync from ScoopInstaller
@@ -25,6 +25,9 @@ jobs:
           static_list: "Scoop,Install,Main,Extras,Versions,Java,Nonportable" # 需要同步的仓库列表
           mappings: "Install=>Scoop-Install, Main=>Scoop-Main, Extras=>Scoop-Extras, Versions=>Scoop-Versions, Java=>Scoop-Java, Nonportable=>Scoop-Nonportable" # 仓库映射规则
 
+  sync-from-dorado:
+    runs-on: ubuntu-latest
+    steps:
       - name: Sync from dorado
         uses: Yikun/hub-mirror-action@master
         with:
